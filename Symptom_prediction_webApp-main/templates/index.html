@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.17/tailwind.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{url_for('static' , filename='map.css')}}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}" />
+    <script src="{{url_for('static',filename='new.js')}}">  </script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="min-h-screen">
+    <div class="navigation">
+      <div class="logo">
+        <img src="{{url_for('static',filename='cell.png')}}" alt="logo" />
+        <h3 style="margin: 0; font-weight: 400;">Medi<span style="color: blue;font-weight: 700;">Care</span></h3>
+      </div>
+      <div class="nav_links">
+        <ul class="links">
+          <li><a href="/home">Home</a></li>
+          <li><a href="/exercises">Exersises</a></li>
+          <li><a href="/chat">Talk with therapist</a></li>
+          <li><a href="/find-doctor">Find the doctor</a></li>
+          <li><button class="btn btn" id="login">
+              {% if session['username'] != None %}
+              {{session['username']}}
+              {% else %}
+              <a href="/login">Login</a>
+              {% endif %}
+          </button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="section h-full">
+      <div class="hero-sec">
+        <div class="heading">
+          <h1 style="font-size:3em; font-weight:bold; font-family:Arial, Helvetica, sans-serif; color:#4E31AA">MediCare🚀</h1>
+          <p style="line-height: 25px; text-align: left" class="mb-20" style="margin-top:20px;">
+            When your health gets compicated and you dont know where to turn, we help you.
+            find better care, faster !
+          </p>
+          <!-- <div class="services">
+            <button><img src={{url_for('static', filename='sym.png')}} alt="sym" /></button
+            >
+            <button><img src={{url_for('static', filename='finddr.png')}} alt="find" /></button
+            >
+            <button><img src="{{url_for('static', filename='chat.png')}}" alt="chat" /></button>
+          </div>
+          <div class="services-cap">
+            <p class="cap" id="sym" >symptom<br /> checker</p>
+            <p class="cap active" id="find">find<br /> doctor</p>
+            <p class="cap" id="chat">chat a<br /> doctor</p>
+          </div> -->
+          
+          <button
+            class="btn btn-md p-2 w-52 h-32 m-6 rounded-full"
+          >
+          <a href="#symptom_entry">
+            <!-- <img src={{url_for('static', filename='symptom.png')}} alt="sym" /> -->
+            Predict Disease</a>
+            
+          </button>
+          <button
+          class="btn btn-md p-2 w-52 h-32 m-6 rounded-full ">
+
+            <a
+            
+            href="./exercises"
+          >
+            Check Exercise
+        </a>
+          </button>
+         
+          <button
+            class="btn btn-md p-2 w-52 h-32 m-6 rounded-full"
+          >
+           <a href="/chat">Chat with doctor</a> 
+          </button>          
+          <button
+            class="btn btn-md p-2 w-52 h-32 m-6 rounded-full"
+          >
+          <a href="/find-doctor">
+            Find the doctor
+          </a>
+            
+          </button>          
+        </div>
+        <div class="img1">
+          <img src="{{url_for('static',filename='symptom.png')}}" alt="img" />
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="min-h-screen flex ">
+    <div class="m-auto" id="symptom_entry">
+      <h1 style="font-size:3em; font-weight:bold; font-family:Arial, Helvetica, sans-serif; color:#4E31AA; margin-bottom: 30px; text-align: center; ">Symptom Checker🚀</h1>
+      <div class="contain" id="userip">
+        <form
+          id="form"
+          action="/predict"
+          method="post"
+          autocomplete="off"
+        >
+          
+          <div class="grp active">
+            <label
+            for="input"
+            style="display: flex; justify-content: center; color: #6D70C6; font-size:2rem; font-weight: lighter; align:center;"
+            >Hello {{session['username']}}, What are you experencing today?</label
+          >
+            <input
+              placeholder="enter here"
+              class="inp"
+              id="input0"
+              type="text"
+              name="symptom1"
+            />
+          </div>
+          <div class="grp">
+            <label
+            for="input"
+            style="display: flex; justify-content: center; color: #6D70C6; font-size:2rem; font-weight: lighter; align:center;"
+            >Any other symptoms?</label
+          >
+            <input
+              placeholder="enter here"
+              class="inp"
+              id="input1"
+              type="text"
+              name="symptom2"
+            />
+          </div>
+          <div class="grp"><label
+            for="input"
+            style="display: flex; justify-content: center; color: #6D70C6; font-size:2rem; font-weight: lighter; align:center;"
+            >Do you experencing any pain in specific region?</label
+          >
+            <input
+              placeholder="enter here"
+              class="inp"
+              id="input2"
+              type="text"
+              name="symptom3"
+            />
+          </div>
+          <div class="grp">
+            <label
+            for="input"
+            style="display: flex; justify-content: center; color: #6D70C6; font-size:2rem; font-weight: lighter; align:center;"
+            >Is the pain constatnt or does it come and go?</label
+          >
+            <input
+              placeholder="enter here"
+              class="inp"
+              id="input3"
+              type="text"
+              name="symptom4"
+            />
+          </div>
+          <div class="grp">
+            <label
+            for="input"
+            style="display: flex; justify-content: center; color: #6D70C6; font-size:2rem; font-weight: lighter; align:center;"
+            >Are there any particular issues or concerns you'd like to discuss?</label
+          >
+            <input
+              placeholder="enter here"
+              class="inp"
+              id="input4"
+              type="text"
+              name="symptom5"
+            />
+          </div>
+          <div class="grp">
+              <label
+              for="input"
+              style="display: flex; justify-content: center; color: #6D70C6; font-size:2rem; font-weight: lighter; align:center;"
+              >What changes have you noticed in your body or health?</label
+            >
+            <input
+              placeholder="enter sym 6"
+              class="inp"
+              id="input5"
+              type="text"
+              name="symptom6"
+            /><br />
+          </div>
+          <input
+            id="submit"
+            class="btn btn-primary btn-md disabled"
+            style="background-color: #00A8CC;"
+            type="submit"
+            value="Predict Now>>>"
+          />
+
+          <ul class="list"></ul>
+        </form>
+      </div>
+      <!--end for upper section// input starts here-->
+
+      <div class="contain2">
+        <div class="btns m-4 hstack btn-group">
+          <button class="btn" onclick="prev()" style="background-color:#2C74B3;">prev</bbackutton>
+          <button class="btn" onclick="next()" id="next" style="background-color:#2C74B3;">next</button>
+        </div>
+      </div>
+      {% if disease %}
+      <div class="result flex mx-20">
+        
+        <div class="disease  rounded-lg bg-red-600 flex-1" style="border-left: none">
+            <h2 style="color:black;">Predicted disease: </h2><br />
+            <h4 style="color:red;">{{ disease }}
+          {{data}}
+          </h4>
+          <p class="text-2xl" style="color:black;" >Description:
+            </p> <p style="color:black;">{{description}}</p>
+          <br />
+        </div>
+        <div class="precaution rounded-lg bg-yellow-400 flex-1 ">
+          <h4 class="text-2xl" style="color:black;">Precution:</h4> <br>
+          <ol>
+            {% for i in precution %}
+            <li>{{i}}</li>
+            {% endfor %}
+          </ol>
+        </div>
+        <div class="treatmen rounded-lg bg-green-600 flex-1">
+          <h4 class="text-2xl" style="color:black;">Treatment:</h4>
+          <div class="flex flex-row-reverse">
+            <div class="flex-1">
+              <h5 class="text-2xl">Ayurvadic:</h5> <br>
+            <p>{{ayur}}</p>
+            </div>
+            <div class="flex-1">
+              <h5 class="text-2xl">Homeopathic:</h5> <br>
+            <p>{{homeopathic}}</p>
+            </div>
+            <div class="flex-1">
+            <h5 class="text-2xl">Conventional:</h5> <br>
+            <p>{{conventional}}</p>
+          </div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="p-12 mx-40 bg-red-500 text-grey-700 rounded-lg font-bold text-center  text-3xl mt-12 font-awesome">
+         <span class="text-4xl font-bold pr-2">{{percentage}}%</span> of symptoms are matching with the predicted disease.
+      </div>
+      <div class="bg-blue-200 p-12 mt-8 h-full mx-20 rounded-md">
+        <p class="text-3xl font-bold font-awesome mb-12">Symptoms you might also experencing: </p>
+        {% for i in other_symptoms %}
+          <a href="https://en.wikipedia.org/wiki/{{i}} " target="_blank" class="mt-8 ml-4 bg-yellow-400 rounded-lg px-4 py-2 text-xl text-white" >{{i}}</a>
+        {% endfor %}
+      </div>
+      <a href="/find-doctor" class="mx-20 rounded-md">
+      <div class="text-3xl mx-20 rounded-md text-white bg-green-400 font-bold p-12 text-center mt-6">See the nearest <span class="text-green-800"> {{special_doctor}}</span></div></a>
+      <div class="flex w-full">
+      <button onclick="getLocation('{{special_doctor}} doctor in sangli, budhgoan')" class="  p-4 mx-auto rounded-lg mt-8 text-white bg-blue-500">Click here to get top recommendations</button>
+    </div>
+      {% endif %}
+      
+    </div>
+    </div>
+
+
+    <!-- <div class="div3">
+      <script src="{{url_for('static',filename='sli.js')}}" defer></script>
+      <div id="carousel" data-auto="true">
+        <div id="scene">
+          <img class="carousel_item" src="{{url_for('static',filename='./lo.jpg')}}" alt="">
+          <img class="carousel_item" src="{{url_for('static',filename='./symche.png')}}" alt="">
+          <img class="carousel_item" src="{{url_for('static',filename='./find.png')}}" alt="">
+          <img class="carousel_item" src="{{url_for('static',filename='./ex.png')}}" alt="">
+          <img class="carousel_item" src="{{url_for('static',filename='./chat.png')}}" alt="">
+        </div>
+      
+        <div id="carousel_btn">
+          <div class="btn prev">Prev</div>
+          <div class="btn next">Next</div>
+        </div>
+      </div>
+      </div> -->
+
+    <div id="drlist" class="mt-12 w-full flex-column">
+    </div>
+    <br>
+
+    <div class="table">
+      <table>
+  
+        <tr>
+          <th>
+            <h2 style="color:#242a45;margin:0">We’ve got this.</h2> <br>
+            <p style="color:#444">When you’re facing a serious health challenge, expertise matters.
+              At Medicare, we're committed to providing you with the best possible care. So why wait? Sign up today and start taking control of your health and wellbeing!.</p>
+          </th>
+          <th><img style="width:250px; margin-left:25%" src="{{url_for('static',filename='medical-team.png')}}" alt="team"></th>
+        </tr>
+        <tr>
+          <th><img style="width:250px; margin-right:15% ; color:black" src="{{url_for('static',filename='symptom.png')}}" alt="chat"></th>
+          <th>
+            <h2 style="color:#242a45;margin:0;text-align:right;">Why MediCare?</h2><br>
+            <p style="text-align:right;color:#444">
+              <span style="color:#444; text-align:right;">
+                Medicare is your one-stop-shop for all your healthcare needs. With our cutting-edge technology and expert medical professionals, we offer a range of services to help you stay healthy and happy. Whether you're looking for a symptom checker, a doctor, exercise tips, or therapy, we have you covered..</p>
+          </th>
+        </tr>
+      </table>
+    </div>
+    <div class="whole">
+     
+      <div class="health-sub">
+        <div class="images">
+          <div><img src="{{url_for('static',filename='img1.png')}}" alt="img1"></div>
+          <div><img src="{{url_for('static',filename='img2.png')}}" alt="img2"></div>
+          <div><img style="scale: 0.8;" src="{{url_for('static',filename='img3.png')}}" alt="img3"></div>
+        </div>
+        <div class="info" style="color:white;">
+          <p style="margin-top: 20px;">More than 130 symptoms from around the world</p>
+          <p style="margin-top: 40px;">Over 100 exercise reviewed monthly</p>
+          <p style="margin-top: 40px;">Thousands of conditions, including complex & rare diseases</p>
+        </div>
+  
+      </div>
+    </div>
+ 
+   
+    <script>
+      let userip = document.getElementById("userip");
+      function hideform() {
+        userip.classList.add("d-none");
+      }
+
+      let active = document.getElementsByClassName("active");
+      console.log(active);
+      let inputs = document.querySelectorAll(".grp");
+      let ans = document.querySelectorAll(".inp");
+      let submit = document.getElementById("submit");
+
+      let count = 0;
+      const next = () => {
+        console.log(ans[count].value.length);
+        submit.classList.remove("active");
+        submit.classList.add("disabled");
+
+        if (ans[count].value.length != 0) {
+          if (count <= 4) {
+            inputs[count].classList.remove("active");
+            count++;
+            if (count == 5) {
+              document.getElementById("next").classList.add("disabled");
+            } else {
+              document.getElementById("next").classList.remove("grp");
+            }
+            inputs[count].classList.add("active");
+          }
+        }
+
+        if (count >= 2) {
+          submit.classList.add("active");
+          submit.classList.remove("disabled");
+        }
+      };
+      const prev = () => {
+        if (count >= 1) {
+          inputs[count].classList.remove("active");
+          count--;
+          if (count == 4) {
+            document.getElementById("next").classList.remove("disabled");
+          }
+          inputs[count].classList.add("active");
+        }
+      };
+
+      let names = [
+        "itching",
+        "skin rash",
+        "nodal_skin_eruptions",
+        "continuous_sneezing",
+        "shivering",
+        "chills",
+        "joint_pain",
+        "stomach_pain",
+        "acidity",
+        "ulcers_on_tongue",
+        "muscle_wasting",
+        "vomiting",
+        "burning_micturition",
+        "spotting_ urination",
+        "fatigue",
+        "weight_gain",
+        "anxiety",
+        "cold_hands_and_feets",
+        "mood_swings",
+        "weight_loss",
+        "restlessness",
+        "lethargy",
+        "patches_in_throat",
+        "irregular_sugar_level",
+        "cough",
+        "high_fever",
+        "sunken_eyes",
+        "breathlessness",
+        "sweating",
+        "dehydration",
+        "indigestion",
+        "headache",
+        "yellowish_skin",
+        "dark_urine",
+        "nausea",
+        "loss_of_appetite",
+        "pain_behind_the_eyes",
+        "back_pain",
+        "constipation",
+        "abdominal_pain",
+        "diarrhoea",
+        "mild_fever",
+        "yellow_urine",
+        "yellowing_of_eyes",
+        "acute_liver_failure",
+        "fluid_overload",
+        "swelling_of_stomach",
+        "swelled_lymph_nodes",
+        "malaise",
+        "blurred_and_distorted_vision",
+        "phlegm",
+        "throat_irritation",
+        "redness_of_eyes",
+        "sinus_pressure",
+        "runny_nose",
+        "congestion",
+        "chest_pain",
+        "weakness_in_limbs",
+        "fast_heart_rate",
+        "pain_during_bowel_movements",
+        "pain_in_anal_region",
+        "bloody_stool",
+        "irritation_in_anus",
+        "neck_pain",
+        "dizziness",
+        "cramps",
+        "bruising",
+        "obesity",
+        "swollen_legs",
+        "swollen_blood_vessels",
+        "puffy_face_and_eyes",
+        "enlarged_thyroid",
+        "brittle_nails",
+        "swollen_extremeties",
+        "excessive_hunger",
+        "extra_marital_contacts",
+        "drying_and_tingling_lips",
+        "slurred_speech",
+        "knee_pain",
+        "hip_joint_pain",
+        "muscle_weakness",
+        "stiff_neck",
+        "swelling_joints",
+        "movement_stiffness",
+        "spinning_movements",
+        "loss_of_balance",
+        "unsteadiness",
+        "weakness_of_one_body_side",
+        "loss_of_smell",
+        "bladder_discomfort",
+        "foul_smell_of urine",
+        "continuous_feel_of_urine",
+        "passage_of_gases",
+        "internal_itching",
+        "toxic_look_(typhos)",
+        "depression",
+        "irritability",
+        "muscle_pain",
+        "altered_sensorium",
+        "red_spots_over_body",
+        "belly_pain",
+        "abnormal_menstruation",
+        "dischromic _patches",
+        "watering_from_eyes",
+        "increased_appetite",
+        "polyuria",
+        "family_history",
+        "mucoid_sputum",
+        "rusty_sputum",
+        "lack_of_concentration",
+        "visual_disturbances",
+        "receiving_blood_transfusion",
+        "receiving_unsterile_injections",
+        "coma",
+        "stomach_bleeding",
+        "distention_of_abdomen",
+        "history_of_alcohol_consumption",
+        "fluid_overload",
+        "blood_in_sputum",
+        "prominent_veins_on_calf",
+        "palpitations",
+        "painful_walking",
+        "pus_filled_pimples",
+        "blackheads",
+        "scurring",
+        "skin_peeling",
+        "silver_like_dusting",
+        "small_dents_in_nails",
+        "inflammatory_nails",
+        "blister",
+        "red_sore_around_nose",
+        "yellow_crust_ooze",
+      ];
+      let sortedNames = names.sort();
+
+      for (let j = 0; j < 6; j++) {
+        var input = document.querySelectorAll("input");
+        console.log(input);
+
+        input[j].addEventListener("keyup", (e) => {
+          removeElements();
+          for (let i of sortedNames) {
+            if (
+              i.toLowerCase().startsWith(input[j].value.toLowerCase()) &&
+              input[j].value != ""
+            ) {
+              let listItem = document.createElement("li");
+              listItem.classList.add("list-items");
+              listItem.style.cursor = "pointer";
+              listItem.onclick = () => {
+                input[j].value = i;
+                removeElements();
+              };
+
+              let word = "<b>" + i.substr(0, input[j].value.length) + "</b>";
+              word += i.substr(input[j].value.length);
+              listItem.innerHTML = word;
+              document.querySelector(".list").appendChild(listItem);
+            }
+          }
+        });
+        // function displayNames(value) {
+        //   value.target.value = value;
+        //   removeElements();
+        // }
+        function removeElements() {
+          let items = document.querySelectorAll(".list-items");
+          items.forEach((item) => {
+            item.remove();
+          });
+        }
+      }
+    </script>
+
+    <!-- <button onclick="getLocation('doctor near me')">
+      CLink mi
+    </button> -->
+    <div id="map" class="hidden">
+    </div>
+    <!-- <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+      ({key: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg", v: "weekly"});</script> -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOD4kARg-3EYI7s_olvMBi-zyEO3kl7mU&libraries=places"></script>
+  </body>
+</html>
+
